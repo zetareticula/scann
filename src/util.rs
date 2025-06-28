@@ -14,6 +14,7 @@
 
 //! Shared utility types for the ScaNN library.
 
+use nalgebra::{DMatrix, DVector};
 use std::error::Error;
 use std::fmt;
 
@@ -50,10 +51,7 @@ pub struct DenseDataset<T> {
 
 impl<T: Clone> DenseDataset<T> {
     pub fn new(data: Vec<Vec<T>>, dimensionality: usize) -> Self {
-        DenseDataset {
-            data,
-            dimensionality,
-        }
+        DenseDataset { data, dimensionality }
     }
 
     pub fn set_dimensionality(&mut self, dim: usize) {
@@ -98,4 +96,29 @@ impl<T: Clone> DatapointPtr<T> {
     pub fn values(&self) -> &[T] {
         &self.values
     }
+}
+
+// New: Matrix utilities for RETRO
+pub fn dot_product<T: Copy + Into<f32>>(a: &DatapointPtr<T>, b: &DatapointPtr<T>) -> f32 {
+    a.values()
+        .iter()
+        .zip(b.values().iter())
+        .map(|(&x, &y)| x.into() * y.into())
+        .sum()
+}
+
+pub fn matrix_multiply(a: &DMatrix<f32>, b: &DMatrix<f32>) -> Result<DMatrix<f32>, Box<dyn Error>> {
+    if a.ncols() != b.nrows() {
+        return Err(invalid_argument_error(&format!(
+            "Matrix dimension mismatch: {}x{} cannot multiply with {}x{}",
+            a.nrows(), a.ncols(), b.nrows(), b.ncols()
+        )));
+    }
+    Ok(a * b)
+}
+
+pub fn softmax(x: &DMatrix<f32>) -> DMatrix<f32> {
+    let exp_x = x.map(|v| v.exp());
+    let sum_exp_x = exp_x.sum();
+    exp_x / sum_exp_x
 }

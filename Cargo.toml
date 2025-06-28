@@ -6,6 +6,10 @@ edition = "2021"
 [dependencies]
 prost = "0.12"
 rayon = { version = "1.8", optional = true }
+nalgebra = "0.32"  # For matrix operations and RoPE
+tch = { version = "0.14", optional = true }  # For PyTorch weight loading
+
 
 [features]
 rayon = ["dep:rayon"]
+torch = ["dep:tch"]

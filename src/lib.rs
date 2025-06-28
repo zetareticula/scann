@@ -12,17 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! ScaNN (Scalable Nearest Neighbors) library for approximate nearest neighbor search.
+//! ScaNN (Scalable Nearest Neighbors) library with RETRO model integration.
 
 pub mod assets;
+pub mod distance_measures;
 pub mod projection;
 pub mod proto;
+pub mod retrieval;
+pub mod retro;
 pub mod serialize;
 pub mod trees;
 pub mod utils;
 
-// Re-export key types for convenience
+// Re-export key types
 pub use assets::populate_and_save_assets_proto;
+pub use distance_measures::{get_distance_measure, DistanceMeasure};
 pub use projection::{PcaProjection, RandomOrthogonalProjection};
+pub use retrieval::ScannRetriever;
+pub use retro::RETRO;
 pub use trees::KMeansTreeTrainingOptions;
 pub use utils::{DenseDataset, DatapointPtr, ScannError};
