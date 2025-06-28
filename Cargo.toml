@@ -1,0 +1,11 @@
+[package]
+name = "scann"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+prost = "0.12"
+rayon = { version = "1.8", optional = true }
+
+[features]
+rayon = ["dep:rayon"]
