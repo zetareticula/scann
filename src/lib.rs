@@ -22,7 +22,7 @@ pub mod retrieval;
 pub mod retro;
 pub mod serialize;
 pub mod trees;
-pub mod utils;
+pub mod util;
 
 // Re-export key types
 pub use assets::populate_and_save_assets_proto;
